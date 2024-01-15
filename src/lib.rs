@@ -46,6 +46,9 @@ pub trait ElvenTools: storage::Storage + operations::Operations {
     if let Some(metadata_flag) = is_metadata_in_uris.into_option() {
       sc_print!("{}", metadata_flag);
     }
+
+    let paused = true;
+    self.paused().set_if_empty(&paused);
   }
 
   #[upgrade]

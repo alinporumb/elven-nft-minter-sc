@@ -6,4 +6,8 @@ pub trait Storage {
   #[view(getNftTokenId)]
   #[storage_mapper("nftTokenId")]
   fn nft_token_id(&self) -> SingleValueMapper<TokenIdentifier>;
+
+  #[view(isMintingPaused)]
+  #[storage_mapper("paused")]
+  fn paused(&self) -> SingleValueMapper<bool>;
 }

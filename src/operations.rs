@@ -19,6 +19,8 @@ pub trait Operations: storage::Storage {
   fn mint(&self, amount_of_tokens: u32) {
     sc_print!("{}", amount_of_tokens);
 
+    require!(self.paused().is_empty(), "The minting is paused or haven't started yet!!!");
+
     let amount = BigUint::from(NFT_AMOUNT);
     let token = TokenIdentifier::from(TOKEN_NAME);
     let token_name = ManagedBuffer::new_from_bytes(TOKEN_NAME.as_bytes());
@@ -116,5 +118,11 @@ pub trait Operations: storage::Storage {
       )
       .async_call()
       .call_and_exit();
+  }
+
+  #[only_owner]
+  #[endpoint(startMinting)]
+  fn start_minting(&self) {
+    self.paused().clear();
   }
 }

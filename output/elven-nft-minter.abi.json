@@ -84,6 +84,16 @@
             ]
         },
         {
+            "name": "isMintingPaused",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        },
+        {
             "name": "mint",
             "mutability": "mutable",
             "payableInTokens": [
@@ -138,6 +148,13 @@
                     "type": "bytes"
                 }
             ],
+            "outputs": []
+        },
+        {
+            "name": "startMinting",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
             "outputs": []
         }
     ],
