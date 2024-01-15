@@ -11,10 +11,15 @@ const METADATA_URI: &str =
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
+use crate::storage;
+
 #[multiversx_sc::module]
-pub trait Operations {
+pub trait Operations: storage::Storage {
+  #[payable("EGLD")]
   #[endpoint(mint)]
-  fn mint(&self) {
+  fn mint(&self, amount_of_tokens: u32) {
+    sc_print!("{}", amount_of_tokens);
+
     let amount = BigUint::from(NFT_AMOUNT);
     let token = TokenIdentifier::from(TOKEN_IDENTIFIER);
     let token_name = ManagedBuffer::new_from_bytes(TOKEN_NAME.as_bytes());
@@ -88,23 +93,29 @@ pub trait Operations {
   ) {
     match result {
       ManagedAsyncCallResult::Ok(token_id) => {
-        sc_print!("{}", token_id);
-        // let mut roles: ManagedVec<EsdtLocalRole> = ManagedVec::new();
-        // roles.push(EsdtLocalRole::NftCreate);
-
-        // self
-        //   .send()
-        //   .esdt_system_sc_proxy()
-        //   .set_special_roles(
-        //     &self.blockchain().get_sc_address(),
-        //     &token_id.unwrap_esdt(),
-        //     roles.iter() //   )
-        //   .async_call()
-        //   .call_and_exit();
+        self.nft_token_id().set(&token_id.unwrap_esdt());
       }
       ManagedAsyncCallResult::Err(_) => {
         // Handle error, e.g., return funds to the owner
       }
     }
+  }
+
+  #[only_owner]
+  #[endpoint(setLocalRoles)]
+  fn set_local_roles(&self, token_roles: ManagedBuffer) {
+    sc_print!("{}", token_roles);
+    let mut roles: ManagedVec<EsdtLocalRole> = ManagedVec::new();
+    roles.push(EsdtLocalRole::NftCreate);
+    self
+      .send()
+      .esdt_system_sc_proxy()
+      .set_special_roles(
+        &self.blockchain().get_sc_address(),
+        &self.nft_token_id().get(),
+        roles.iter()
+      )
+      .async_call()
+      .call_and_exit();
   }
 }

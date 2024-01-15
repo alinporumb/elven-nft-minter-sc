@@ -4,9 +4,10 @@ multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
 pub mod operations;
+pub mod storage;
 
 #[multiversx_sc::contract]
-pub trait ElvenTools: operations::Operations {
+pub trait ElvenTools: storage::Storage + operations::Operations {
   #[allow_multiple_var_args]
   #[init]
   fn init(

@@ -74,9 +74,27 @@
             "outputs": []
         },
         {
+            "name": "getNftTokenId",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "TokenIdentifier"
+                }
+            ]
+        },
+        {
             "name": "mint",
             "mutability": "mutable",
-            "inputs": [],
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [
+                {
+                    "name": "amount_of_tokens",
+                    "type": "u32"
+                }
+            ],
             "outputs": []
         },
         {
@@ -105,6 +123,18 @@
                 },
                 {
                     "name": "token_properties",
+                    "type": "bytes"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "setLocalRoles",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "token_roles",
                     "type": "bytes"
                 }
             ],
