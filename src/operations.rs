@@ -71,7 +71,7 @@ pub trait Operations: storage::Storage {
       can_transfer_create_role: false,
       can_change_owner: false,
       can_upgrade: false,
-      can_add_special_roles: false,
+      can_add_special_roles: true,
     };
     self
       .send()
