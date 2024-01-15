@@ -1,6 +1,5 @@
 const NFT_AMOUNT: u32 = 1;
-const TOKEN_IDENTIFIER: &str = "CustomNFTTokenIdentifier";
-const TOKEN_NAME: &str = "CSTMNFT";
+const TOKEN_NAME: &str = "SPH1";
 const ROYALTIES: u32 = 10;
 const ATTRIBUTES: &str = "face:face2;head:head3;eyes:eyes4";
 const IMAGE_URI: &str =
@@ -21,7 +20,7 @@ pub trait Operations: storage::Storage {
     sc_print!("{}", amount_of_tokens);
 
     let amount = BigUint::from(NFT_AMOUNT);
-    let token = TokenIdentifier::from(TOKEN_IDENTIFIER);
+    let token = TokenIdentifier::from(TOKEN_NAME);
     let token_name = ManagedBuffer::new_from_bytes(TOKEN_NAME.as_bytes());
     let royalties = BigUint::from(ROYALTIES);
     let attributes = ManagedBuffer::new_from_bytes(ATTRIBUTES.as_bytes());
@@ -62,7 +61,7 @@ pub trait Operations: storage::Storage {
 
     let issue_cost = self.call_value().egld_value();
     let collection_token_name = ManagedBuffer::new_from_bytes(TOKEN_NAME.as_bytes());
-    let collection_token_ticker = ManagedBuffer::new_from_bytes("CSTMNFT".as_bytes());
+    let collection_token_ticker = ManagedBuffer::new_from_bytes(TOKEN_NAME.as_bytes());
     let properties = NonFungibleTokenProperties {
       can_freeze: false,
       can_wipe: false,
@@ -70,7 +69,7 @@ pub trait Operations: storage::Storage {
       can_transfer_create_role: false,
       can_change_owner: false,
       can_upgrade: false,
-      can_add_special_roles: true,
+      can_add_special_roles: false,
     };
     self
       .send()
