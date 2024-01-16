@@ -280,9 +280,9 @@ pub trait Setup: storage::Storage + operations::Operations {
       "All tokens have been minted already or the amount you want to mint is too much. Check limits! (totally or per drop)!"
     );
 
-    for address in addresses.into_iter() {
+    for _address in addresses.into_iter() {
       for _ in 0..amount_of_tokens_per_address {
-        self.mint_single_nft(BigUint::zero(), OptionalValue::Some(address.clone()));
+        self.mint_single_nft(BigUint::zero());
       }
     }
   }

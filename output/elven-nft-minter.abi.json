@@ -404,7 +404,7 @@
             "name": "mint",
             "mutability": "mutable",
             "payableInTokens": [
-                "EGLD"
+                "*"
             ],
             "inputs": [
                 {
