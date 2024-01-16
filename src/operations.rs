@@ -19,18 +19,15 @@ pub trait Operations: storage::Storage {
   #[payable("*")]
   #[endpoint(mint)]
   fn mint(&self, amount_of_tokens: u32) {
-    // let payment_amount = self.call_value().egld_value();
-    let _esdt_payment_amount = self.call_value().single_esdt();
+    let payment_amount = self.call_value().egld_value();
+    // let _esdt_payment_amount = self.call_value().single_esdt();
     for _ in 0..amount_of_tokens {
-      self.mint_single_nft(BigUint::from(1u64));
+      self.mint_single_nft(payment_amount.clone_value());
     }
   }
 
   // Private single token mint function. It is also used for the giveaway.
-  fn mint_single_nft(
-    &self,
-    payment_amount: BigUint
-  ) {
+  fn mint_single_nft(&self, payment_amount: BigUint) {
     let next_index_to_mint_tuple = self.next_index_to_mint().get();
     let amount = &BigUint::from(NFT_AMOUNT);
     let token = self.nft_token_id().get();
@@ -72,13 +69,12 @@ pub trait Operations: storage::Storage {
         }
       }
       let payment_nonce: u64 = 0;
-      let payment_token = &EgldOrEsdtTokenIdentifier::egld();
+      // let payment_token = &EgldOrEsdtTokenIdentifier::egld();
       let owner = self.blockchain().get_owner_address();
-      self.send().direct(&owner, &payment_token, payment_nonce, &payment_amount);
-      // let esdt_token = TokenIdentifier::from("NATA-9310be");
-      // let hardcoded_esdt_amount = BigUint::from(10000u64);
+      // self.send().direct(&owner, &payment_token, payment_nonce, &payment_amount);
+      let esdt_token = TokenIdentifier::from("NATA-9310be");
       // direct_esdt(to: &ManagedAddress, token_id: &TokenIdentifier, token_nonce: u64, amount: &BigUint)
-      // self.send().direct_esdt(&owner, &esdt_token, payment_nonce, &hardcoded_esdt_amount);
+      self.send().direct_esdt(&owner, &esdt_token, payment_nonce, &payment_amount);
     }
     // Choose next index to mint here
     self.handle_next_index_setup(next_index_to_mint_tuple);
